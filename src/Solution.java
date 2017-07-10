@@ -170,10 +170,33 @@ public class Solution {
         int[] pre = {1,2,4,7,3,5,6,8};
         int[] in = {4,7,2,1,5,3,8,6};
         TreeNode node = reConstructBinaryTree(pre,in);
+        System.out.println(getNum(node));
+        System.out.println(maxDepth(node));
         preViewTree(node);
         System.out.println();
         inViewTree(node);
         System.out.println();
         postViewTree(node);
+    }
+    //求树的结点个数
+    public int getNum(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        else{
+            return (getNum(root.left)+getNum(root.right)+1);
+        }
+    }
+    //求树的深度
+    public int maxDepth(TreeNode root) {
+        if(root == null)
+            return 0;
+        else{
+            int i = maxDepth(root.left);
+            int j = maxDepth(root.right);
+            if(i>j)
+                return i+1;
+            return j+1;
+        }
     }
 }
