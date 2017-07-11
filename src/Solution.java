@@ -241,4 +241,45 @@ public class Solution {
         head.next = null;
         return p;
     }
+    //合并两个有序链表
+    public ListNode Merge(ListNode list1,ListNode list2) {
+        ListNode head = new ListNode(0);
+        ListNode newnode = head;
+        if(list1==null)
+            return list2;
+        if(list2==null)
+            return list1;
+        if(list1==null && list2==null)
+            return null;
+        while(list1!=null && list2!=null){
+            if(list1.val<list2.val){
+                newnode.next = list1;
+                list1 =list1.next;
+            }else{
+                newnode.next = list2;
+                list2 = list2.next;
+            }
+            newnode = newnode.next;
+        }
+        if(list1!=null){
+            newnode.next = list1;
+        }
+        if(list2!=null){
+            newnode.next = list2;
+        }
+        return head.next;
+    }
+    //输入两棵二叉树A，B，判断B是不是A的子结构
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        if(root2==null || root1==null)
+            return false;
+        return IsSubtree(root1,root2) || HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+    }
+    public boolean IsSubtree(TreeNode root1,TreeNode root2) {
+        if(root2 == null)
+            return true;
+        if(root1 == null)
+            return false;
+        return root1.val==root2.val && IsSubtree(root1.left,root2.left) && IsSubtree(root1.right,root2.right);
+    }
 }
