@@ -1,8 +1,9 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+
+import java.util.*;
+
+
 
 
 /**
@@ -119,8 +120,10 @@ public class Solution {
             node = new TreeNode(pre[0]);
             for (int i = 0; i < in.length; i++) {
                 if(in[i]==pre[0]){
-                    node.left = reConstructBinaryTree(Arrays.copyOfRange(pre,1,i+1),Arrays.copyOfRange(in,0, i));
-                    node.right = reConstructBinaryTree(Arrays.copyOfRange(pre,i+1,pre.length),Arrays.copyOfRange(in,i+1,in.length));
+                    node.left = reConstructBinaryTree(Arrays.copyOfRange(pre,1,i+1),
+                            Arrays.copyOfRange(in,0, i));
+                    node.right = reConstructBinaryTree(Arrays.copyOfRange(pre,i+1,pre.length),
+                            Arrays.copyOfRange(in,i+1,in.length));
                 }
             }
         }
@@ -198,5 +201,44 @@ public class Solution {
                 return i+1;
             return j+1;
         }
+    }
+    //二叉树的镜像
+    public void Mirror(TreeNode root){
+        //队列方式实现
+        if(root == null)
+            return;
+        Queue<TreeNode> q = new LinkedList();
+        q.offer(root);
+        TreeNode p = null;
+        while(!q.isEmpty()){
+            p = q.poll();
+            if(p.left!=null || p.right!=null){
+                TreeNode temp = p.left;
+                p.left = p.right;
+                p.right = temp;
+            }
+            if(p.left!=null)
+                q.offer(p.left);
+            if(p.right!=null)
+                q.offer(p.right);
+        }
+        //递归方式实现
+        if(root == null)
+            return;
+        TreeNode node = root.left;
+        root.left = root.right;
+        root.right = node;
+        Mirror(root.left);
+        Mirror(root.right);
+    }
+    //链表的反转
+    //递归
+    public ListNode ReverseList(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        ListNode p = ReverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return p;
     }
 }
