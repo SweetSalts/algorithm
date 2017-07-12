@@ -333,4 +333,48 @@ public class Solution {
         }
         return b;
     }
+
+    //输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。
+    // 假设压入栈的所有数字均不相等。
+    // 例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，
+    // 但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+    public boolean IsPopOrder(int [] pushA,int [] popA) {
+        Stack stack = new Stack();
+        int i = 0;
+        for(int j=0;j<pushA.length;j++){
+            stack.push(pushA[j]);
+            while(!stack.empty() && stack.peek().equals(popA[i])){
+                stack.pop();
+                i++;
+            }
+        }
+        return stack.empty();
+    }
+    //输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+    // 如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        if(sequence ==null||sequence.length ==0){
+            return false;
+        }
+        int indexleft =0;//左根的初始值
+        int indexright =sequence.length-1;//右根的初始值
+        int root = sequence[indexright];
+        while(sequence[indexleft]<root){
+            indexleft++;//找到左子树的边界值
+
+        }
+        while(indexright>indexleft){
+            if(sequence[indexright]<root)
+                return false;//找到不满足右节点特点的节点，返回false
+            indexright--;
+        }
+        //判断是否满足后序遍历的结果，左边都得小于根，右边都得大于根
+        boolean left=true;
+        boolean right=true;
+        if(indexleft>0)
+            left =VerifySquenceOfBST(Arrays.copyOfRange(sequence,0,indexleft));//这东西是前闭后开的
+        if(indexright<sequence.length-1)
+            right=VerifySquenceOfBST(Arrays.copyOfRange(sequence,indexleft,sequence.length-1));
+        return left&&right;
+    }
 }
