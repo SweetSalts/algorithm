@@ -379,19 +379,19 @@ public class Solution {
     }
     //输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
     // 路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
-    ArrayList<ArrayList<Integer>> array = new ArrayList<ArrayList<Integer>>();
+    ArrayList<ArrayList<Integer>> arrays = new ArrayList<ArrayList<Integer>>();
     ArrayList<Integer> a = new ArrayList<Integer>();
     public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
         if(root == null)
-            return array;
+            return arrays;
         a.add(root.val);
         target -= root.val;
         if(target==0 && root.left==null && root.right==null)
-            array.add(new ArrayList<Integer>(a));
+            arrays.add(new ArrayList<Integer>(a));
         FindPath(root.left,target);
         FindPath(root.right,target);
         a.remove(a.size()-1);
-        return array;
+        return arrays;
     }
     //复杂链表的复制
     //输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，
@@ -431,5 +431,62 @@ public class Solution {
             cur = temp;
         }
         return cloneHead;
+    }
+   //输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+    // 要求不能创建任何新的结点，只能调整树中结点指针的指向。
+    //采用递归
+   public TreeNode Convert(TreeNode pRootOfTree) {
+       if(pRootOfTree == null)
+           return null;
+       if(pRootOfTree.left==null && pRootOfTree.right==null)
+           return pRootOfTree;
+       TreeNode left = Convert(pRootOfTree.left);
+       TreeNode p = left;
+       //p指向左子树最右边的节点
+       while(p!=null && p.right!=null){
+           p = p.right;
+       }
+       if(left!=null){
+           p.right = pRootOfTree;
+           pRootOfTree.left = p;
+       }
+       TreeNode right = Convert(pRootOfTree.right);
+       if(right!=null){
+           pRootOfTree.right = right;
+           right.left = pRootOfTree;
+       }
+       return left!=null?left:pRootOfTree;
+   }
+   //输入一个字符串,按字典序打印出该字符串中字符的所有排列。字符串可能有重复
+    // 例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+    //思路：将字符串的第一位和后面的每一位进行交换，交换后将后面的字符串再进行全排列，如此递归，直到递归到数组中的最后一位
+   public ArrayList<String> Permutation(String str) {
+       ArrayList<String> array = new ArrayList<String>();
+       if(str!=null || str.length()>0){
+           PermutationHelper(str.toCharArray(),0,array);
+           Collections.sort(array);
+       }
+       return array;
+
+   }
+    public void PermutationHelper(char[] s,int i,ArrayList array){
+        if(i == s.length-1){
+            String str = String.valueOf(s);
+            //查看字符串是否有重复
+            if(!array.contains(str))
+                array.add(str);
+        }else{
+            for(int j = i; j < s.length; j++){
+                swap(s,i,j);
+                PermutationHelper(s,i+1,array);
+                swap(s,i,j);
+            }
+        }
+    }
+    public void swap(char[] s,int i,int j){
+        char temp;
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
     }
 }
