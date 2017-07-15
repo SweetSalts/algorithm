@@ -1,3 +1,4 @@
+import com.sun.deploy.util.StringUtils;
 import org.junit.Test;
 
 
@@ -489,4 +490,48 @@ public class Solution {
         s[i] = s[j];
         s[j] = temp;
     }
+    //动态规划求连续子向量最大和
+    public int FindGreatestSumOfSubArray(int[] array) {
+        //int[] m = new int[array.length];
+        //for(int j = 0; j < array.length; j++ ){
+        //    int max = array[j];
+        //    int sum = max;
+        //    for(int i = j+1; i < array.length; i++){
+        // 	    sum = sum + array[i];
+        //        if(sum > max)
+        //           max = sum;
+        //    }
+        //    m[j] = max;
+        //}
+        //Arrays.sort(m);
+        //return m[m.length-1];
+        int res = array[0];
+        int max = array[0];
+        for(int i=1;i<array.length;i++){
+            max = Math.max(max+array[i],array[i]);
+            res = Math.max(max,res);
+        }
+        return res;
+    }
+    //求出1到n之间，1出现的次数，包括各位中所有的1.
+    //思路来自：http://blog.csdn.net/yi_afly/article/details/52012593
+    public int NumberOf1Between1AndN_Solution(int n) {
+        if(n < 1)
+            return 0;
+        int count = 0;
+        int round = n;
+        int base = 1;
+        while(round > 0){
+            int weight = round % 10;
+            round/=10;
+            count += round * base;
+            if(weight == 1)
+                count += (n%base) + 1;
+            if(weight > 1)
+                count += base;
+            base *= 10;
+        }
+        return count;
+    }
+
 }
