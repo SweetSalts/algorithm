@@ -533,5 +533,54 @@ public class Solution {
         }
         return count;
     }
+    //输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+    // 例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+    //若ab > ba 则 a > b,若ab < ba 则 a < b，若ab = ba 则 a = b；
+    // 解释说明：比如 "3" < "31"但是 "331" > "313"，所以要将二者拼接起来进行比较
+    public String PrintMinNumber(int [] numbers) {
+        String[] str = new String[numbers.length];
+        for(int i = 0; i < numbers.length; i++){
+            str[i] = String.valueOf(numbers[i]);
+        }
+        Arrays.sort(str, (o1, o2) -> {
+            String s1 = o1 + o2;
+            String s2 = o2 + o1;
+            return s1.compareTo(s2);
+        });
+        StringBuilder s = new StringBuilder();
+        for(String a : str){
+            s.append(a);
+        }
+        return s.toString();
+    }
+    // 把只包含因子2、3和5的数称作丑数（Ugly Number）。
+    // 例如6、8都是丑数，但14不是，因为它包含因子7。
+    // 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+    // k[0]:1
+    // 1*2,1*3,1*5 min:2,k[1]:2;
+    // 2*2,1*3,1*5 min:3,k[2]:3;
+    // 2*2,2*3,1*5 min:4,k[3]:4;
+    // 3*2,2*3,1*5 min:5,k[4]:5;
+    public int GetUglyNumber_Solution(int index) {
+        if(index <= 0)
+            return 0;
+        int[] k = new int[index];
+        k[0] = 1;
+        int x=0,y=0,z=0;
+        for(int i = 1; i < index; i++){
+            int a = k[x] * 2;
+            int b = k[y] * 3;
+            int c = k[z] * 5;
+            int min = Math.min(a,Math.min(b,c));
+            k[i] = min;
+            if(min == k[x] * 2)
+                x++;
+            if(min == k[y] * 3)
+                y++;
+            if(min == k[z] * 5)
+                z++;
+        }
+        return k[index-1];
+    }
 
 }
