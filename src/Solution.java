@@ -582,5 +582,33 @@ public class Solution {
         }
         return k[index-1];
     }
-
+    //在一个字符串(1<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置
+    public int FirstNotRepeatingChar(String str) {
+        char[] s = str.toCharArray();
+        int[] num = new int['z'+1];
+        for(char c : s){
+            num[c]++;
+        }
+        for(int i = 0; i < s.length; i++){
+            if(num[s[i]] == 1)
+                return i;
+        }
+        return -1;
+    }
+    //求两个链表的第一个公共节点
+    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+        ListNode p1 = pHead1;
+        ListNode p2 = pHead2;
+        while(p1!=p2){
+            if(p1==null)
+                p1 = pHead2;
+            else
+                p1 = p1.next;
+            if(p2==null)
+                p2 = pHead1;
+            else
+                p2 = p2.next;
+        }
+        return p1;
+    }
 }
